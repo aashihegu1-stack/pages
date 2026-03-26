@@ -1,9 +1,10 @@
 ---
-layout: cs-portfolio-lesson
+layout: cs-bigsix-lesson
 title: "Analytics — All-in-One Interactive Lesson"
 description: "A multi-step interactive lesson covering the admin dashboard, certificates, and mastery questions."
 permalink: /bigsix/analytics_lesson
-parent: "Analytics/Admin"
+parent: "bigsix"
+lesson_number: 6
 team: "Curators"
 categories: [CSP, Analytics, Interactive]
 tags: [analytics, admin, interactive]
@@ -11,260 +12,276 @@ author: "Curators Team"
 date: 2025-12-02
 ---
 
+<!-- ============================================================
+     STYLESHEET — All colors are CSS custom properties (variables)
+     so the entire theme can be changed from one place (:root {}).
+     ============================================================ -->
 <style>
+  /* ---- Design tokens: change these to retheme the whole page ---- */
   :root {
-    --bg: #0a0e27;
-    --panel: #0f1729;
-    --border: rgba(255, 255, 255, 0.08);
-    --text: #e6eef8;
-    --muted: #9aa6bf;
-    --accent: #7c3aed;
+    --bg:      #0a0e27;
+    --panel:   #0f1729;
+    --border:  rgba(255,255,255,0.08);
+    --text:    #e6eef8;
+    --muted:   #9aa6bf;
+    --accent:  #7c3aed;
+    --accent2: #9f7aea;
+    --success: #22c55e;
+    --danger:  #ef4444;
   }
-  * { box-sizing: border-box; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
-  .header { margin-bottom: 32px; }
-  .header h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px 0; }
-  .header p { color: var(--muted); font-size: 14px; margin: 0; }
-  .progress-bar { display: flex; gap: 8px; margin: 20px 0; justify-content: space-between; align-items: center; }
-  .progress-bar .step { flex: 1; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; cursor: pointer; transition: 0.2s; }
-  .progress-bar .step.active { background: var(--accent); height: 6px; }
-  .section { display: none; }
-  .section.active { display: block; }
-  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-  .card h2 { margin-top: 0; font-size: 20px; color: #a6c9ff; }
-  .nav-buttons { display: flex; gap: 12px; margin-top: 24px; justify-content: space-between; }
-  button { appearance: none; border: 1px solid var(--border); background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s; }
-  button:hover { background: #6d28d9; transform: translateY(-1px); }
-  button.secondary { background: #334155; }
-  button.secondary:hover { background: #1e293b; }
 
-  /* Analytics Styles */
-  .analytics-container, .cert-container { color: var(--text); }
-  .page-title { color: var(--accent); }
-  .metric-card, .toolbar, .table-container, .info-box, .cert-card { background: #051226; border: 1px solid var(--border); }
-  .metric-value, .toolbar-title, th, .student-name, .detail-header, .module-box h4, .module-summary { color: var(--accent); }
-  thead { border-bottom-color: var(--accent); }
-  .download-btn { background: var(--accent); }
-  .progress-bar-fill { background: linear-gradient(90deg, var(--accent) 0%, #9f7aea 100%); }
-  .detail-row { border-top-color: var(--accent); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px 40px; }
+  .header    { margin-bottom: 32px; }
+  .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+  .header p  { color: var(--muted); font-size: 14px; }
+
+  .progress-bar           { display: flex; gap: 8px; margin: 20px 0; align-items: center; }
+  .progress-bar .step     { flex: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; cursor: pointer; transition: 0.2s; }
+  .progress-bar .step.active { background: var(--accent); height: 6px; }
+
+  .section        { display: none; }
+  .section.active { display: block; }
+
+  .card    { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card h2 { margin-bottom: 12px; font-size: 20px; color: #a6c9ff; }
+
+  .nav-buttons { display: flex; gap: 12px; margin-top: 24px; justify-content: space-between; }
+  button            { appearance: none; border: 1px solid var(--border); background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s; }
+  button:hover      { background: #6d28d9; transform: translateY(-1px); }
+  button.secondary  { background: #334155; color: #fff; }
+  button.secondary:hover { background: #1e293b; }
+  button:disabled   { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .metrics-grid  { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .metric-card   { background: #051226; border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .metric-title  { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-value  { font-size: 32px; font-weight: 800; color: var(--accent); margin: 8px 0 4px; }
+  .metric-subtitle { font-size: 12px; color: var(--muted); }
+
+  .toolbar       { display: flex; align-items: center; justify-content: space-between; background: #051226; border: 1px solid var(--border); border-radius: 8px 8px 0 0; padding: 12px 16px; }
+  .toolbar-title { font-weight: 700; color: var(--accent); }
+  .download-btn  { background: var(--accent); }
+
+  .table-container { background: #051226; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; overflow-x: auto; }
+  table            { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead            { border-bottom: 2px solid var(--accent); }
+  th               { padding: 10px 16px; text-align: left; color: var(--accent); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; user-select: none; }
+  th:hover         { background: rgba(124,58,237,0.1); }
+  th[data-sort]::after     { content: " ↕"; font-size: 10px; opacity: 0.5; }
+  th[data-sort="asc"]::after  { content: " ↑"; opacity: 1; }
+  th[data-sort="desc"]::after { content: " ↓"; opacity: 1; }
+  td               { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td      { background: rgba(255,255,255,0.03); }
+  .student-name    { font-weight: 600; color: var(--accent); }
+  td.center        { text-align: center; }
+
+  .bar-wrap  { display: flex; align-items: center; gap: 8px; }
+  .bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; }
+  .bar-fill  { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%); transition: width 0.4s ease; }
+  .bar-label { font-size: 12px; min-width: 36px; text-align: right; }
+
+  .detail-row    { border-top: 1px solid var(--accent); background: rgba(124,58,237,0.05); }
+  .detail-header { font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+  .modules-list  { display: flex; flex-wrap: wrap; gap: 8px; }
+  .module-chip   { background: rgba(124,58,237,0.15); border: 1px solid var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 12px; }
+
+  .cert-card   { background: #051226; border: 1px solid var(--border); border-radius: 12px; padding: 24px; max-width: 400px; }
+  .cert-badge  { display: inline-block; background: var(--success); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-bottom: 12px; }
+  .cert-title  { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+  .cert-org    { font-size: 13px; color: var(--muted); }
+  .cert-date   { font-size: 12px; color: var(--muted); margin: 8px 0 16px; }
+  .cert-actions { display: flex; gap: 10px; }
+  .btn-share   { background: #0077b5; }
+  .btn-share:hover { background: #005f91; }
+
+  .frq-box      { border: 1px solid #2c2c2e; padding: 1rem; border-radius: 8px; margin: 1.5rem 0; background: #1c1c1e; color: #e5e5ea; font-weight: 300; }
+  .frq-box textarea { width: 100%; border-radius: 6px; border: 1px solid #3a3a3c; padding: 0.5rem; margin-top: 0.5rem; background: #2c2c2e; color: #f2f2f7; resize: vertical; }
+  #frq-feedback { margin-top: 12px; line-height: 1.6; }
+
+  .loading { color: var(--muted); font-style: italic; padding: 20px 0; }
 </style>
 
-<div class="container">
+<!-- ============================================================
+     HTML STRUCTURE
+     The page is split into three section divs (#step1-3).
+     JavaScript (navigation.js) shows only the active one.
+     ============================================================ -->
+<div class="container page-content">
+
   <div class="header">
     <h1>Analytics — All-in-One</h1>
     <p>Interactive lesson covering the admin dashboard, certificates, and mastery questions.</p>
     <a href="../" class="button back-btn">Back</a>
   </div>
 
+  <!-- Progress bar — rendered dynamically by navigation.js -->
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- Step 1: Admin Analytics -->
+  <!-- ======================================================
+       STEP 1 — Admin Analytics Dashboard
+       Data fetched and rendered by analytics.js
+       ====================================================== -->
   <div class="section active" id="step1">
     <div class="card">
       <h2>1 — Admin Analytics Dashboard</h2>
-      <p>This dashboard provides a comprehensive overview of student performance. View real-time metrics, sort the interactive gradebook, and expand rows to see detailed progress for each student.</p>
-      <div class="analytics-container">
-        <h1 class="page-title">Student Grading Overview</h1>
-        <div class="metrics-grid">
-            <div class="metric-card"><div class="metric-header"><span class="metric-title">Class Average</span></div><div class="metric-value" id="class-average">--%</div><div class="metric-subtitle" id="students-enrolled">-- students</div></div>
-            <div class="metric-card"><div class="metric-header"><span class="metric-title">Modules Completed</span></div><div class="metric-value" id="modules-completed">--</div><div class="metric-subtitle">Out of 25 total</div></div>
-            <div class="metric-card"><div class="metric-header"><span class="metric-title">Top Performer</span></div><div class="metric-value" id="top-grade">--%</div><div class="metric-subtitle" id="top-scorer">--</div></div>
+      <p>This dashboard provides a comprehensive overview of student performance. View real-time metrics, sort the interactive gradebook, and expand any row to see per-module progress.</p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-title">Class Average</div>
+          <div class="metric-value" id="class-average">—</div>
+          <div class="metric-subtitle" id="students-enrolled">loading…</div>
         </div>
-        <div class="toolbar"><div class="toolbar-title">Class Gradebook</div><button class="download-btn" onclick="window.downloadReport()">Export Report</button></div>
-        <div class="table-container">
-            <table>
-                <thead><tr><th onclick="window.sortTable('name')" id="th-name">Student Name</th><th class="center">Overall</th></tr></thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+        <div class="metric-card">
+          <div class="metric-title">Modules Completed</div>
+          <div class="metric-value" id="modules-completed">—</div>
+          <div class="metric-subtitle">Out of 25 total</div>
         </div>
+        <div class="metric-card">
+          <div class="metric-title">Top Performer</div>
+          <div class="metric-value" id="top-grade">—</div>
+          <div class="metric-subtitle" id="top-scorer">—</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <span class="toolbar-title">Class Gradebook</span>
+        <button class="download-btn" id="exportBtn">Export Report</button>
+      </div>
+
+      <div class="table-container">
+        <table id="gradebook">
+          <thead>
+            <tr>
+              <th data-key="name">Student Name</th>
+              <th data-key="overall" class="center">Overall</th>
+              <th data-key="modules" class="center">Modules</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="3" class="loading">Loading gradebook…</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <!-- Step 2: Certificates -->
+  <!-- ======================================================
+       STEP 2 — Certificates & Badges
+       Handled by certificates.js
+       ====================================================== -->
   <div class="section" id="step2">
     <div class="card">
       <h2>2 — Certificates and Badges</h2>
-      <p>Claim your certificates for completed modules. You can download each certificate as a high-quality image or share it directly to your LinkedIn profile.</p>
-      <div class="cert-container">
-        <h2 class="section-title">Overall Certificate</h2>
-        <div class="certificates-grid">
-            <div class="cert-card cert-green"><span class="cert-badge">Verified</span><h3 class="cert-title">CS Portfolio Certificate</h3><div class="cert-org">Open Coding Society</div><div class="cert-date">December 2025</div><div class="cert-actions"><button class="btn btn-download" onclick="window.downloadCert('Computer Science Portfolio', 'Open Coding Society', 'December 2025')">⬇ Download</button><button class="btn btn-share" onclick="window.addToLinkedIn('CS Portfolio Certificate')">Add to LinkedIn</button></div></div>
+      <p>Claim your certificates for completed modules. Download as a high-quality image or share directly to LinkedIn.</p>
+      <div class="cert-card">
+        <span class="cert-badge">Verified</span>
+        <div class="cert-title">CS Portfolio Certificate</div>
+        <div class="cert-org">Open Coding Society</div>
+        <div class="cert-date" id="certDate">—</div>
+        <div class="cert-actions">
+          <button class="btn-download" id="btnDownload">⬇ Download</button>
+          <button class="btn-share"    id="btnLinkedIn">Add to LinkedIn</button>
         </div>
       </div>
-      <canvas id="certCanvas" style="display: none;"></canvas>
+      <canvas id="certCanvas" style="display:none;"></canvas>
     </div>
   </div>
 
-  <!-- Step 3: FRQ -->
+  <!-- ======================================================
+       STEP 3 — Free Response Question
+       Handled by frq.js
+       ====================================================== -->
   <div class="section" id="step3">
     <div class="card">
       <h2>3 — Free Response Question</h2>
-      <p>Test your knowledge by submitting a response to the free-response question below. Your answer will be graded by an AI assistant.</p>
-      <div class="frq-box" id="quest-frq" style="border:1px solid #2c2c2e; padding:1rem; border-radius:8px; margin:1.5rem 0; background:#1c1c1e; color:#e5e5ea; font-weight:300;">
-        <b>FRQ:</b> <span id="frq-question">Describe what analytics or metrics you aim to collect and how you’ll present them.</span><br><br>
-        <textarea id="frq-answer" rows="5" placeholder="Type your response here..." style="width:100%; border-radius:6px; border:1px solid #3a3a3c; padding:0.5rem; margin-top:0.5rem; background:#2c2c2e; color:#f2f2f7;"></textarea>
-        <p></p>
+      <p>Submit a response below. Your answer will be graded by an AI assistant.</p>
+      <div class="frq-box">
+        <b>FRQ:</b>
+        <span id="frq-question">Describe what analytics or metrics you aim to collect and how you'll present them.</span>
+        <br><br>
+        <textarea id="frq-answer" rows="5" placeholder="Type your response here…"></textarea>
+        <br>
         <button id="frq-grade-btn" style="margin-top:10px;">Grade</button>
         <div id="frq-feedback"></div>
       </div>
     </div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Prev / Next navigation — wired by navigation.js -->
   <div class="nav-buttons">
-    <button id="prevBtn" onclick="prevStep()" class="secondary">← Previous</button>
-    <div style="display: flex; gap: 8px;">
-      <span id="stepIndicator" style="color: var(--muted); font-size: 12px; align-self: center;">Step 1 / 3</span>
-      <button id="nextBtn" onclick="nextStep()">Next →</button>
+    <button id="prevBtn" class="secondary">← Previous</button>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span id="stepIndicator" style="color:var(--muted); font-size:12px;"></span>
+      <button id="nextBtn">Next →</button>
     </div>
   </div>
-</div>
 
+</div><!-- /.container -->
+
+<!-- ============================================================
+     MAIN SCRIPT — ORCHESTRATOR
+     This block does ONE thing: import the SRP modules and call
+     their init functions in the correct order on DOMContentLoaded.
+     No logic lives here — it all lives in assets/js/bigsix/analytics/
+     ============================================================ -->
 <script type="module">
-// ========== State & Navigation ==========
-let currentStep = 0;
-const steps = ['step1', 'step2', 'step3'];
-const STORAGE_KEY = 'analytics_combined_v1';
 
-function showStep(n) {
-  currentStep = Math.max(0, Math.min(steps.length - 1, n));
-  steps.forEach((s, i) => document.getElementById(s).classList.toggle('active', i === currentStep));
-  
-  const bar = document.getElementById('progressBar');
-  if(bar) bar.innerHTML = steps.map((_, i) => `<div class="step ${i <= currentStep ? 'active' : ''}" onclick="showStep(${i})"></div>`).join('');
-  
-  const indicator = document.getElementById('stepIndicator');
-  if(indicator) indicator.textContent = `Step ${currentStep + 1} / ${steps.length}`;
-  
-  document.getElementById('prevBtn').disabled = currentStep === 0;
-  document.getElementById('nextBtn').disabled = currentStep === steps.length - 1;
-
-  persist();
-}
-window.showStep = showStep;
-function prevStep() { showStep(currentStep - 1); }
-window.prevStep = prevStep;
-function nextStep() { showStep(currentStep + 1); }
-window.nextStep = nextStep;
-
-// ========== Analytics, Certs, and FRQ Scripts ==========
+// ── Shared API config ─────────────────────────────────────────
 import { javaURI, pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
-// --- Certificates ---
-async function getCredentials() {
-    try {
-        const res = await fetch(`${pythonURI}/api/id`, fetchOptions);
-        if (res.ok) return (await res.json()).name || 'Student Name';
-    } catch (err) { console.error("Error fetching credentials:", err); }
-    return 'Student Name';
-}
-window.downloadCert = async function(course, org, date) {
-    const name = await getCredentials();
-    const canvas = document.getElementById('certCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 1400; canvas.height = 1000;
-    ctx.fillStyle = '#f8f6f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 25; ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
-    ctx.font = 'bold 60px Georgia'; ctx.textAlign = 'center'; ctx.fillStyle = '#2c3e50';
-    ctx.fillText('CERTIFICATE OF COMPLETION', canvas.width / 2, 260);
-    ctx.font = '28px Arial'; ctx.fillText('This is to certify that', canvas.width / 2, 380);
-    ctx.fillStyle = '#ea8c33'; ctx.font = 'italic bold 52px Georgia'; ctx.fillText(name, canvas.width / 2, 470);
-    const link = document.createElement('a');
-    link.download = `${course.replace(/\s+/g, '_')}_Certificate.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-}
-window.addToLinkedIn = function(courseName) {
-    const certId = 'CSPORTFOLIO-' + Date.now();
-    const url = new URL('https://www.linkedin.com/profile/add');
-    url.searchParams.append('name', courseName);
-    url.searchParams.append('organizationName', 'Open Coding Society');
-    url.searchParams.append('issueYear', new Date().getFullYear());
-    url.searchParams.append('issueMonth', new Date().getMonth() + 1);
-    url.searchParams.append('certId', certId);
-    window.open(url.toString(), '_blank');
-}
+// ── SRP modules — each owns exactly one responsibility ────────
+import { restore, persist }          from '{{ site.baseurl }}/assets/js/bigsix/persistence.js';
+import { initNavigation, showStep }  from '{{ site.baseurl }}/assets/js/bigsix/navigation.js';
+import { loadAnalytics }             from '{{ site.baseurl }}/assets/js/bigsix/analytics/analytics.js';
+import { initCerts }                 from '{{ site.baseurl }}/assets/js/bigsix/analytics/certificates.js';
+import { initFRQ }                   from '{{ site.baseurl }}/assets/js/bigsix/analytics/frq.js';
 
-// --- Analytics Dashboard ---
-async function mainAnalytics() {
-    // Mock data for demonstration
-    const students = [{id: 1, name: 'Priya Patel', modules: { overall: 96 }}, {id: 2, name: 'John Doe', modules: { overall: 88 }}];
-    document.getElementById("class-average").innerText = `92%`;
-    document.getElementById("students-enrolled").innerText = `${students.length} students enrolled`;
-    document.getElementById("modules-completed").innerText = `4.5`;
-    document.getElementById("top-grade").innerText = `96%`;
-    document.getElementById("top-scorer").innerText = `Priya Patel`;
-    
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = students.map(s => `<tr><td><span class="student-name">${s.name}</span></td><td class="center">${s.modules.overall}%</td></tr>`).join('');
-}
-window.downloadReport = () => alert("Report download functionality would be implemented here.");
-window.sortTable = () => alert("Sorting functionality would be implemented here.");
-
-// --- FRQ ---
-const btn = document.getElementById('frq-grade-btn');
-btn.addEventListener('click', async () => {
-    const q = document.getElementById('frq-question').textContent.trim();
-    const a = document.getElementById('frq-answer').value.trim();
-    const fb = document.getElementById('frq-feedback');
-    if (!a) { fb.innerHTML = '<span style="color:red;">Please enter a response.</span>'; return; }
-    btn.disabled = true; fb.innerHTML = 'Grading...';
-    try {
-        const res = await fetch(`${javaURI}/api/gemini-frq/grade`, {
-            method: 'POST', mode: 'cors', credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: q, answer: a })
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const result = await res.json();
-        fb.innerHTML = (result.candidates?.[0]?.content?.parts?.[0]?.text || 'No feedback.').replace(/\*\*/g, '<strong>').replace(/\n/g,'<br>');
-    } catch (e) {
-        fb.innerHTML = `<span style="color:red;">Error: ${e.message}</span>`;
-    } finally {
-        btn.disabled = false;
-    }
-});
-
-// ========== Persistence ==========
-function persist() {
-  const data = { step: currentStep, frqAnswer: document.getElementById('frq-answer')?.value };
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
-}
-
-function restore() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!data) return;
-    const frqAnswerEl = document.getElementById('frq-answer');
-    if (frqAnswerEl && data.frqAnswer) frqAnswerEl.value = data.frqAnswer;
-    showStep(data.step || 0);
-  } catch (e) {}
-}
-
-// ========== Boot ==========
+// ── Boot ──────────────────────────────────────────────────────
+// Order matters:
+//   1. restore() first so saved step + FRQ draft are applied before
+//      navigation renders the progress bar
+//   2. initNavigation() sets up prev/next and renders the initial step
+//   3. data modules load async after UI is ready
 document.addEventListener('DOMContentLoaded', () => {
-  restore();
-  mainAnalytics();
+  restore(showStep);                       // load saved step + FRQ draft
+  initNavigation(showStep, persist);       // wire prev/next + progress bar
+  loadAnalytics(javaURI, fetchOptions);   // fetch students → render dashboard
+  initCerts(pythonURI, fetchOptions);     // wire cert download + LinkedIn
+  initFRQ(javaURI);                       // wire grade button
 });
+
 </script>
 
+<!-- ============================================================
+     BACK BUTTON HANDLER
+     Kept as a plain (non-module) script so it runs independently
+     without needing any imports.
+     ============================================================ -->
 <script>
-// Back button handler: prefer history.back() when possible, fall back to parent path
-(function(){
-  document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('a.back-btn').forEach(function(a){
-      a.addEventListener('click', function(e){
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // respect modifier clicks
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('a.back-btn').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
         e.preventDefault();
-        try{
-          if (document.referrer && new URL(document.referrer).origin === location.origin){ history.back(); return; }
-        }catch(err){}
-        var p = location.pathname.replace(/\/$/,'').split('/');
-        if (p.length>1){ p.pop(); window.location.href = p.join('/') + '/'; }
+        try {
+          if (document.referrer && new URL(document.referrer).origin === location.origin) {
+            history.back();
+            return;
+          }
+        } catch (err) {}
+        const parts = location.pathname.replace(/\/$/, '').split('/');
+        if (parts.length > 1) { parts.pop(); window.location.href = parts.join('/') + '/'; }
         else { window.location.href = '/'; }
       });
     });
   });
 })();
 </script>
+
+<script src="/assets/js/lesson-completion-bigsix.js"></script>
