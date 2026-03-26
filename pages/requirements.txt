@@ -8,7 +8,7 @@ pandas
 seaborn
 scikit-learn
 progress
-mammoth
-pillow
-python-docx
-markdownify
+newspaper3k
+wikipedia
+emoji
+lxml_html_clean

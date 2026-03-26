@@ -17,7 +17,6 @@ permalink: /gamify/adventureGamev1-1
     import GameLevelDesert from "{{site.baseurl}}/assets/js/GameEnginev1.1/GameLevelDesert.js";
     import GameLevelEnd from "{{site.baseurl}}/assets/js/GameEnginev1.1/GameLevelEnd.js";
     import GameLevelOverworld from "{{site.baseurl}}/assets/js/GameEnginev1.1/GameLevelOverworld.js";
-    import Leaderboard from "{{site.baseurl}}/assets/js/GameEnginev1.1/essentials/Leaderboard.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
     const gameLevelClasses = [ GameLevelDesert, GameLevelWater, GameLevelEnd, GameLevelOverworld ];
@@ -30,12 +29,7 @@ permalink: /gamify/adventureGamev1-1
         fetchOptions: fetchOptions,
         gameContainer: document.getElementById("gameContainer"),
         gameCanvas: document.getElementById("gameCanvas"),
-        gameLevelClasses: gameLevelClasses,
-        leaderboardClass: Leaderboard,
-        leaderboardOptions: {
-            // Change to 'on' to show leaderboard by default.
-            initialVisibility: 'off'
-        }
+        gameLevelClasses: gameLevelClasses
 
     }
     // Launch Adventure Game and keep the returned Game instance
