@@ -11,7 +11,7 @@ permalink: /wgu/d292/task3-mockup/
 
 <!-- Converted from: Plagiarism-WGU-SGM2-Task3-Mockup-Higher-Level-Education.docx -->
 <!-- File creation date: 2025-12-16 11:12:56 -->
-<!-- Conversion date: 2026-03-25 22:47:57 -->
+<!-- Conversion date: 2026-03-25 22:53:45 -->
 <!-- Images extracted: 21 -->
 
 **Prototype Mockup for an E-Learning Solution on Plagiarism Avoidance**
