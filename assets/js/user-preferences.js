@@ -23,6 +23,7 @@
     'tr': { name: 'Turkish', code: 'tr' },
     'uk': { name: 'Ukrainian', code: 'uk' },
     'he': { name: 'Hebrew', code: 'he' },
+    'fa': { name: 'Persian (Farsi)', code: 'fa' },
   };
 
   const PRESETS = {
@@ -143,6 +144,7 @@
     set('--text', text);
     set('--text-strong', adjustColor(text, lightBg ? -20 : 20));
     set('--white1', text);
+    set('--theme', lightBg ? "base" : "dark"); // For Mermaid charts
 
     // Panels contrast with background
     const panel = adjustColor(bg, 25 * dir);
