@@ -1,4 +1,4 @@
-import Character from '../GameEngine/Character.js';
+import Character from '../MansionLogic/Character.js';
 import showDeathScreen from './DeathScreen.js';
 import { updatePlayerHealthBar } from "./HealthBars.js";
 

@@ -5,6 +5,29 @@ permalink: /gamify/mansionGame
 microblog: true
 ---
 
+<style>
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#gameContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 20px;
+    position: relative;
+    background: #000;
+}
+
+#gameCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+</style>
+
 <div id="gameContainer">
     <div id="promptDropDown" class="promptDropDown" style="z-index: 9999"></div>
     <canvas id='gameCanvas'></canvas>
@@ -12,9 +35,9 @@ microblog: true
 
 <script type="module">
     // Mansion Game assets locations (use central core + GameControl)
-    import Core from "{{site.baseurl}}/assets/js/GameEngine/Game.js";
-    import GameControl from "{{site.baseurl}}/assets/js/mansionGame/GameEngine/GameControl.js";
-    import { initCheats } from "{{site.baseurl}}/assets/js/mansionGame/GameEngine/cheats.js";
+    import Core from "{{site.baseurl}}/assets/js/mansionGame/MansionLogic/Game.js";
+    import GameControl from "{{site.baseurl}}/assets/js/mansionGame/GameControl.js";
+    import { initCheats } from "{{site.baseurl}}/assets/js/mansionGame/cheats.js";
     import GameLevelMain from "{{site.baseurl}}/assets/js/mansionGame/mansionLevelMain.js";
     import GameLevel1 from "{{site.baseurl}}/assets/js/mansionGame/mansionLevel1.js";
     import GameLevel2 from "{{site.baseurl}}/assets/js/mansionGame/mansionLevel2.js";
@@ -34,8 +57,8 @@ microblog: true
         fetchOptions: fetchOptions,
         gameContainer: document.getElementById("gameContainer"),
         gameCanvas: document.getElementById("gameCanvas"),
-        gameLevelClasses: gameLevelClasses
-        ,
+        gameLevelClasses: gameLevelClasses,
+        disablePauseMenu: false,  // Enable pause menu buttons
         // Global photographic background for the entire game. Replace with your local image if desired.
         globalBackgroundData: {
             src: "{{site.baseurl}}/images/mansionGame/mansion_outside_photo.png",

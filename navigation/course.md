@@ -14,17 +14,13 @@ permalink: /navigation/courses/
 </div>
 
 <script type="module">
-    import { pythonURI, baseurl } from '{{site.baseurl}}/assets/js/api/config.js';
+    import { pythonURI, baseurl, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
     async function displayUserCourses() {
         const container = document.getElementById('userCourses');
         
         try {
-            const response = await fetch(`${pythonURI}/api/user/class`, {
-                method: 'GET',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' }
-            });
+            const response = await fetch(`${pythonURI}/api/user/class`, fetchOptions );
 
             if (!response.ok) {
                 container.innerHTML = '<p>Please log in to view your courses.</p>';
@@ -43,9 +39,9 @@ permalink: /navigation/courses/
             }
 
             const courseMap = {
-                'CSSE': { name: 'CSSE', url: '{{site.baseurl}}/navigation/section/csse' },
-                'CSP': { name: 'APCSP', url: '{{site.baseurl}}/navigation/section/csp' },
-                'CSA': { name: 'APCSA', url: '{{site.baseurl}}/navigation/section/csa' }
+                'CSSE': { name: 'CSSE', url: '{{site.baseurl}}/navigation/courses/csse' },
+                'CSP': { name: 'APCSP', url: '{{site.baseurl}}/navigation/courses/csp' },
+                'CSA': { name: 'APCSA', url: '{{site.baseurl}}/navigation/courses/csa' }
             };
 
             let tableHTML = '<table style="width:100%; text-align:center;"><tr>';

@@ -5,7 +5,7 @@ permalink: /gamify/mansion5
 microblog: true
 ---
 
-<div id="gameContainer">
+<div id="gameContainer" style="position: relative;">
     <div id="promptDropDown" class="promptDropDown" style="z-index: 9999"></div>
     <canvas id='gameCanvas' width="800" height="600"></canvas>
 </div>
@@ -22,8 +22,8 @@ html, body {
 
 <script type="module">
     // Mansion Game assets locations (use central core + GameControl)
-    import Core from "{{site.baseurl}}/assets/js/GameEngine/Game.js";
-    import GameControl from "{{site.baseurl}}/assets/js/mansionGame/GameEngine/GameControl.js";
+    import Core from "{{site.baseurl}}/assets/js/mansionGame/MansionLogic/Game.js";
+    import GameControl from "{{site.baseurl}}/assets/js/mansionGame/GameControl.js";
     import MansionLevel5 from "{{site.baseurl}}/assets/js/mansionGame/mansionLevel5.js";
     import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
