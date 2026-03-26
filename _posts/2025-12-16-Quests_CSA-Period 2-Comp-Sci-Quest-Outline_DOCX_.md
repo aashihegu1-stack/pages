@@ -11,7 +11,7 @@ permalink: /docx/CSA-Period 2-Comp-Sci-Quest-Outline/
 
 <!-- Converted from: CSA-Period 2-Comp-Sci-Quest-Outline.docx -->
 <!-- File creation date: 2025-12-16 11:12:56 -->
-<!-- Conversion date: 2026-03-25 22:41:53 -->
+<!-- Conversion date: 2026-03-25 22:47:57 -->
 <!-- Images extracted: 0 -->
 
 ## **Quest of Code – Building a CS Portfolio (AP CSA 2025)**

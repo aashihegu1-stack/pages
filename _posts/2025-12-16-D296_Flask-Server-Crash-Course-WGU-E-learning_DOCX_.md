@@ -11,7 +11,7 @@ permalink: /wgu/d296/task2-flask-crash-course/
 
 <!-- Converted from: Flask-Server-Crash-Course-WGU-E-learning.docx -->
 <!-- File creation date: 2025-12-16 11:12:56 -->
-<!-- Conversion date: 2026-03-25 22:41:53 -->
+<!-- Conversion date: 2026-03-25 22:47:57 -->
 <!-- Images extracted: 1 -->
 
 SPM2 – Task2 - Crash Course on Building a Flask Server

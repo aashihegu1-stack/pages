@@ -1,7 +1,5 @@
 ---
 canonical_id: sprints-home
-categories:
-- DevOps
 courses:
   csa:
     week: 1

@@ -1,10 +1,8 @@
 ---
 canonical_id: sprints-home
-categories:
-- DevOps
 courses:
   csp:
-    week: 4
+    week: 8
 description: From startups to global tech teams, sprints drive how modern software
   is built. This page introduces you to the sprint workflow which is a structured
   approach to turning ideas into real, working products. By learning to plan, build,

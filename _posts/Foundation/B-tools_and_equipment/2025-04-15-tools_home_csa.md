@@ -11,12 +11,11 @@ description: Tech has reshaped our lives, from the internet to the smartphone in
   possibilities.
 infoGraph: tools_infograph
 layout: post
-microblog: true
 permalink: /tools/csa/
 questions: tools_questions
 sticky_rank: 1
 tailwind: true
-title: Tools and Equipment
+title: Tools and Equipment Setup
 toc: false
 type: tech skills
 ---
