@@ -83,8 +83,7 @@ Check if this is a course lesson and determine which course context to use
           {% for week in (sprint.start..sprint.end) %}
           {% for post in posts %}
           {% if post.courses[current_course] %}
-          {% comment %}Include all files with courses frontmatter (including converted notebook markdown files){%
-          endcomment %}
+          {% comment %}Include all files with courses frontmatter (including converted notebook markdown files){% endcomment %}
           {% comment %}Skip files with multiple courses - they should use course-specific versions{% endcomment %}
           {% assign course_count = 0 %}
           {% for course in post.courses %}
@@ -113,20 +112,18 @@ Check if this is a course lesson and determine which course context to use
   <!-- MAIN CONTENT -->
   <div class="lesson-main">
     <!-- Top Bar -->
-    <div class="topbar-lesson">
-      <div class="topbar-left">
+    <div class="lesson-topbar">
+      <div class="topbar-actions">
+        <a href="{{ site.baseurl }}/navigation/courses/{{ current_course }}" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+          Sprint View
+        </a>
         <div class="breadcrumbs">
-          <a href="{{ site.baseurl }}/navigation/courses/{{ current_course }}">
-            <i class="fas fa-home"></i>
-          </a>
+          <i class="fas fa-home"></i>
           <i class="fas fa-chevron-right"></i>
           <span>Week {{ current_week }}</span>
           <i class="fas fa-chevron-right"></i>
           <span class="current">{{ page.title }}</span>
-          <button id="topbar-complete-btn" onclick="toggleComplete()">
-            <i class="fas fa-circle" id="complete-icon-topbar"></i>
-            <span id="complete-text-topbar">Burndown</span>
-          </button>
         </div>
       </div>
       <div class="topbar-progress">
@@ -160,11 +157,6 @@ Check if this is a course lesson and determine which course context to use
           {%- endif -%}
 
           {{ content }}
-
-          {% if page.show_gist_export %}
-          {% comment %} Only show the export button when the notebook explicitly requests it {% endcomment %}
-          {% include gist-export-button.html %}
-          {% endif %}
 
           {% if page.assignment %}
           <div class="assignment-submission">
@@ -234,32 +226,24 @@ Check if this is a course lesson and determine which course context to use
         {%- endif -%}
       </div>
     </div>
+
+    <!-- Bottom Navigation -->
+    <div class="lesson-bottom">
+      <div class="lesson-bottom-inner">
+        <div class="bottom-actions">
+          <button class="btn btn-outline" id="complete-btn" onclick="toggleComplete()">
+            <i class="fas fa-circle" id="complete-icon"></i>
+            <span id="complete-text">Mark Complete</span>
+          </button>
+        </div>
+        <button class="btn btn-primary" onclick="nextLesson()">
+          Next
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-
-{% if page.challenge_submit %}
-<script>
-  // Wire the bottom-bar "Submit Lesson" button to the lesson submit component injected by notebook conversion.
-  (function () {
-    const btn = document.getElementById('submit-lesson-btn');
-    if (!btn) return;
-
-    btn.addEventListener('click', () => {
-      // Prefer clicking the existing lesson submit button if present
-      const lessonSubmitBtn = document.querySelector('.lesson-submit-container .lesson-submit-btn');
-      if (lessonSubmitBtn) {
-        lessonSubmitBtn.click();
-        return;
-      }
-
-      // Fallback: scroll to any submit UI on the page
-      const submitContainer = document.querySelector('.lesson-submit-container');
-      if (submitContainer) {
-        submitContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    });
-  })();
-</script>
-{% endif %}
 
 <!-- Floating hamburger menu (mobile only) -->
 <button class="floating-menu-btn" id="floating-menu-btn" style="display: none;">
@@ -350,30 +334,22 @@ Check if this is a course lesson and determine which course context to use
     const completionData = loadCompletionData();
     const isCompleted = completionData[currentLessonId] || false;
 
-    // Helper to update specific button elements
-    const updateBtnElements = (iconId, textId) => {
-        const icon = document.getElementById(iconId);
-        const text = document.getElementById(textId);
-        
-        if (icon && text) {
-            if (isCompleted) {
-                icon.classList.remove('fa-circle');
-                icon.classList.add('fa-circle-check');
-                text.textContent = 'Completed';
-            } else {
-                icon.classList.remove('fa-circle-check');
-                icon.classList.add('fa-circle');
-                text.textContent = 'Burndown';
-            }
-        }
-    };
+    const icon = document.getElementById('complete-icon');
+    const text = document.getElementById('complete-text');
 
-    // Update bottom button (legacy/mobile if kept)
-    updateBtnElements('complete-icon', 'complete-text');
-    
-    // Update topbar button
-    updateBtnElements('complete-icon-topbar', 'complete-text-topbar');
+    if (icon && text) {
+      if (isCompleted) {
+        icon.classList.remove('fa-circle');
+        icon.classList.add('fa-circle-check');
+        text.textContent = 'Completed';
+      } else {
+        icon.classList.remove('fa-circle-check');
+        icon.classList.add('fa-circle');
+        text.textContent = 'Burndown';
+      }
+    }
   }
+
   // Update UI based on completion data
   function updateUI() {
     const completionData = loadCompletionData();
@@ -409,17 +385,6 @@ Check if this is a course lesson and determine which course context to use
     if (document.getElementById('lesson-progress')) {
       const lessonProgress = total > 0 ? ((currentIndex + 1) / total) * 100 : 0;
       document.getElementById('lesson-progress').style.width = `${lessonProgress}%`;
-    }
-  }
-
-  window.prevLesson = function () {
-    const lessonItems = Array.from(document.querySelectorAll('.lesson-item'));
-    const currentIndex = lessonItems.findIndex(item => item.classList.contains('active'));
-
-    if (currentIndex > 0) {
-      window.location.href = lessonItems[currentIndex - 1].href;
-    } else {
-      alert('You are on the first lesson!');
     }
   }
 
@@ -665,7 +630,13 @@ Check if this is a course lesson and determine which course context to use
   // NOTE: This getUid function is duplicated from admin_foundation.html logic
   async function getUid() {
     try {
-      const res = await fetch(`${pythonURI}/api/id`, fetchOptions);
+      const res = await fetch(`${pythonURI}/api/id`, {
+        ...fetchOptions,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
 
       if (res.ok) {
         const data = await res.json();
@@ -713,7 +684,7 @@ Check if this is a course lesson and determine which course context to use
         ...submissionData
       };
 
-      const res = await fetch(`${javaURI}/api/grades`, {
+      const res = await fetch(`${javaURI}/api/grades`, { 
         ...fetchOptions,
         method: "POST",
         headers: {
@@ -1543,17 +1514,7 @@ Check if this is a course lesson and determine which course context to use
   {%- include disqus_comments.html -%}
   {%- endif -%}
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
-
-  <!-- Enhanced Analytics Tracking -->
-  <script type="module">
-    import { pythonURI, javaURI } from '{{ site.baseurl }}/assets/js/api/config.js';
-    window.pythonURI = pythonURI;
-    window.javaURI = javaURI;
-  </script>
-  <script src="{{ site.baseurl }}/assets/js/ocs-analytics-enhanced.js"></script>
-  <script src="{{ site.baseurl }}/assets/js/code-runner-analytics.js"></script>
-  <script src="{{ site.baseurl }}/assets/js/lesson-completion.js"></script>
-  <script src="{{ site.baseurl }}/assets/js/lesson-completion-bigsix.js"></script>
+  
 </article>
 
 {% endif %}

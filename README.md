@@ -1,12 +1,10 @@
 # Introduction
 
-Founded and maintained by John Mortensen.
-
-Open Coding Society `Pages` is a project designed to support students in their Computer Science and Software Engineering education. It offers a wide range of resources including tech talks, code examples, and educational blogs.
+Open Coding Society `student` is a project designed to support students in their Computer Science and Software Engineering education. It offers a wide range of resources including tech talks, code examples, and educational blogs.
 
 This GitHub Pages repository can be customized by the blogger to support computer science learning as the student works through the pathways of using Javascript, Python/Flask, Java/Spring. It is intended to support course work for Computer Science and Software Engineering (CSSE), AP Computer Science Principles (APCSP or CSP), and AP Computer Science 'A' (APCSA, or CSA).
 
-"Open Coding Society's instructional model is grounded in **Connectivism**, recognizing that learning happens through diverse networks of people, platforms, and AI. OCS is refining `pages` using **Merrill's structure**, deepening learning through **Fink**, ensuring access via **UDL**, and supporting our classroom through **Agile and Design Thinking ceremonies**, with a touch of **Gagné** to focus each classroom day. OCS wants to create projects that support learning for today's digital, open, and connected world."
+"Open Coding Society's instructional model is grounded in **Connectivism**, recognizing that learning happens through diverse networks of people, platforms, and AI. OCS is refining `student` using **Merrill's structure**, deepening learning through **Fink**, ensuring access via **UDL**, and supporting our classroom through **Agile and Design Thinking ceremonies**, with a touch of **Gagné** to focus each classroom day. OCS wants to create projects that support learning for today's digital, open, and connected world."
 
 ## Student Requirements
 
@@ -36,7 +34,6 @@ The Apache license has its roots in Fastpages.  Thus, it carries that license fo
 - **Code Examples**: Provides practical coding examples in JavaScript, including a platformer game, and frontend code for user databases using Python and Java backends.
 - **Educational Blogs**: Offers instructional content on various topics such as developer tools setup, deployment on AWS, SQL databases, machine learning, and data structures. It utilizes Jupyter Notebooks for interactive lessons and coding challenges, often referred to as `hacks`.
 - **Tools and Integrations**: Features GitHub actions for blog publishing, Utterances for blog commenting, local development support via Makefile and scripts, and styling with the Minima Theme and SASS. It also includes an Agile Toolkit to assist in Student Teaching, Assignment Tracking, Live Reviews, and more.
-- **Keyboard Shortcuts**: Pages supports keyboard shortcuts using `Alt+Shift+key` (e.g. `Alt+Shift+C` for calendar, `Alt+Shift+H` for home, `Alt+Shift+S` for student toolkit). Press `Alt+Shift+?` to see all shortcuts. These use a non-conflicting modifier so browser defaults (copy, save, print, etc.) are unaffected.
 
 ### Contributions
 
@@ -58,16 +55,16 @@ The absolutes in setup up...
 **Update `_config.yml`**: You need to modify the `_config.yml` file to reflect your repository's name. This configuration is crucial because it ensures that your project's styling is correctly applied, making your deployed site look as intended rather than unstyled or broken.
 
 ```text
-github_repo: "pages" 
-baseurl: "/pages"
+github_repo: "portfolio" 
+baseurl: "/portfolio"
 ```
 
 **Set Repository Name in Makefile**: Adjust the `REPO_NAME` variable in your Makefile to match your GitHub repository's name. This action facilitates the automatic updating of posts and notebooks on your local development server, improving the development process.
 
 ```make
 # Configuration, override port with usage: make PORT=4200
-PORT ?= 4500
-REPO_NAME ?= pages
+PORT ?= 4600
+REPO_NAME ?= student
 LOG_FILE = /tmp/jekyll$(PORT).log
 ```
 
@@ -77,7 +74,7 @@ All `GitHub Pages` websites are managed on GitHub infrastructure and use GitHub 
 
 - GitHub uses `Jekyll` to transform your markdown and HTML content into static websites and blogs. [Jekyll](https://jekyllrb.com/).
 - A Linux shell is required to work with this project integration with GitHub Pages, GitHub and VSCode.  Ubuntu is the preferred shell, though MacOS shell is supported as well.  There will be some key setup scripts that follow in the README.
-- Visual Studio Code is the Pages author's preferred code editor and extensible development environment.  VSCode has a rich ecosystem of developer extensions that ease working with GitHub Pages, GitHub, and many programming languages.  Setting up VSCode and extensions will be elaborated upon in this document.
+- Visual Studio Code is the author's preferred code editor and extensible development environment.  VSCode has a rich ecosystem of developer extensions that ease working with GitHub Pages, GitHub, and many programming languages.  Setting up VSCode and extensions will be elaborated upon in this document.
 - An anatomy section in this README will describe GitHub Pages and conventions that are used to organize content and files.  This includes file names, key coding files, metadata tagging of blogs, styling tooling for blogs, etc.
 
 ### Development Environment Setup
@@ -91,8 +88,8 @@ Quick start.  A quick start below is a reminder, but is dependent on your knowle
 Run these commands to obtain the project, then locate into the project directory with the terminal, install an extensive set of tools, and make.
 
 ```bash
-git clone <this-repo> # git clone https://github.com/open-coding-society/pages.git 
-cd <repo-dir>/scripts # cd pages 
+git clone <this-repo> # git clone https://github.com/open-coding-society/portfolio.git 
+cd <repo-dir>/scripts # cd student 
 ```
 
 #### Windows WSL and/or Ubuntu or Kali Users
@@ -202,7 +199,7 @@ Start the preview server in the terminal,
 The terminal output from `make` shows the server address. "Cmd" or "Ctl" click the http location to open the preview server in a browser. Here is an example Server address message, click on the Server address to load:...
 
   ```text
-  http://0.0.0.0:4500/pages/
+  http://0.0.0.0:4599/portfolio/
   ```
 
 ### Regeneration of web application
@@ -318,7 +315,6 @@ In the front matter, you can also define things like a title and description for
   title: Jupyter Python Sample
   description: Example Blog!!!  This shows code and notes from hacks.
   type: ccc
-  courses: { csa: {week: 5} }
   ---
   ```
 

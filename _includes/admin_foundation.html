@@ -433,7 +433,13 @@
 
     async function getCredentials() {
       try {
-        const res = await fetch(`${pythonURI}/api/id`, fetchOptions);
+        const res = await fetch(`${pythonURI}/api/id`, {
+          ...fetchOptions,
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        });
 
         if (res.ok) {
           const data = await res.json();
@@ -450,7 +456,13 @@
 
     async function getGrades() {
       try {
-        const res = await fetch(`${javaURI}/api/grades`, fetchOptions );
+        const res = await fetch(`${javaURI}/api/grades`, {
+          ...fetchOptions,
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        });
 
         if (res.ok) {
           const data = await res.json();
@@ -731,6 +743,9 @@
                 const res = await fetch(`${javaURI}/api/grades`, {
                   ...fetchOptions,
                   method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
                   body: JSON.stringify({
                     uid: uid,
                     title: title,
