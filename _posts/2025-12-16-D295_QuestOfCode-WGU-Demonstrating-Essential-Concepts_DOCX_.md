@@ -11,7 +11,7 @@ permalink: /wgu/d295/task2-demonstration/
 
 <!-- Converted from: QuestOfCode-WGU-Demonstrating-Essential-Concepts.docx -->
 <!-- File creation date: 2025-12-16 11:12:56 -->
-<!-- Conversion date: 2026-03-25 23:22:21 -->
+<!-- Conversion date: 2026-03-26 18:36:50 -->
 <!-- Images extracted: 0 -->
 
 D295 Task 2: Quest-Based Learning - Demonstrating Essential Concepts for K–12 E-Learning

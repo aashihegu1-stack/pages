@@ -51,6 +51,9 @@ theme: minima
 plugins:
   - jekyll-include-cache
 
+exclude:
+  - feed.xml
+
 # Minima-specific settings (applicable to Minima v3 and above only)
 # -----------------------------------------------------------------
 #
